@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace GJFramework
 {
-    public class LevelDirector : MonoBehaviour, IController
+    public class LevelDirector : MonoSingleton<LevelDirector>, IController
     {
         // Start is called before the first frame update
         void Start()

@@ -14,6 +14,7 @@ namespace QFramework
     public interface IState
     {
         bool Condition();
+        bool OverCondition();
         void Enter();
         void Update();
         void FixedUpdate();
@@ -26,6 +27,7 @@ namespace QFramework
     public class CustomState : IState
     {
         private Func<bool> mOnCondition;
+        private Func<bool> mOnOverCondition;
         private Action mOnEnter;
         private Action mOnUpdate;
         private Action mOnFixedUpdate;
@@ -73,6 +75,12 @@ namespace QFramework
         public bool Condition()
         {
             var result = mOnCondition?.Invoke();
+            return result == null || result.Value;
+        }
+
+        public bool OverCondition()
+        {
+            var result = mOnOverCondition?.Invoke();
             return result == null || result.Value;
         }
 
@@ -395,7 +403,12 @@ namespace QFramework.Example
 
         bool IState.Condition()
         {
-            return  OnCondition();;
+            return OnCondition();;
+        }
+
+        public bool OverCondition()
+        {
+            return OnOverCondition();;
         }
 
         void IState.Enter()
@@ -423,6 +436,8 @@ namespace QFramework.Example
         }
 
         protected virtual bool OnCondition() => true;
+
+        protected virtual bool OnOverCondition() => true;
 
         protected virtual void OnEnter()
         {

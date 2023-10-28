@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 764105e26bf35684b958e8c54943636e, type: 3}
   m_Name: PlayerProfile
   m_EditorClassIdentifier: 
+  name: Player
+  speed: 3
+  sprintDistance: 3
+  isDebug: 1
+  ActionPriorityDict:
+    m_keys: 0000000001000000020000000300000004000000050000000600000007000000
+    m_values: 000000000a0000000a0000000a0000000a0000000a0000000a00000014000000
