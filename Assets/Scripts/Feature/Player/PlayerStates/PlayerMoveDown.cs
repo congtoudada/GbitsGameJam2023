@@ -9,5 +9,20 @@ namespace GJFramework
         {
             this.mTarget = target as PlayerController;;
         }
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+            mTarget.animController.SetBool(PawnController.IS_RUNNING, true);
+            ActionKit.Delay(1.0f / mTarget.data.speed * mTarget.playerData.lock_ratio, () =>
+            {
+                mTarget.CanDoNextState();
+            }).Start(mTarget);
+        }
+        
+        protected override void OnExit()
+        {
+            mTarget.animController.SetBool(PawnController.IS_RUNNING, false);
+        }
     }
 }

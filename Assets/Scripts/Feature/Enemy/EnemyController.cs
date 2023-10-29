@@ -14,26 +14,38 @@ namespace GJFramework
 {
     public enum EnemyState
     {
+        None,
         Idle,
         Patrol,
         Chase,
+        MoveTo,
         Attack,
         Die
     }
     
     public class EnemyController : PawnController
     {
-        public FSM<EnemyController> FSM = new FSM<EnemyController>();
-        // Start is called before the first frame update
-        void Start()
+        public FSM<EnemyState> FSM = new FSM<EnemyState>();
+        public Animator animator;
+        public EnemyData enemyData;
+
+        protected void Start()
         {
-            
+            FSM.OnStateChanged((pre_action, now_action) =>
+            {
+                if (data.isDebug)
+                    Debug.Log($"[ {data.name} ] {pre_action} -> {now_action}");
+            });
+
+            transform.localScale = Vector3.one * data.scale;
+            animator.speed *= 2.0f / data.scale;
+
         }
 
         // Update is called once per frame
-        void Update()
+        protected void Update()
         {
-            
+            FSM.Update();
         }
     }
 }

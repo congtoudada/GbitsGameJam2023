@@ -10,6 +10,7 @@ namespace GJFramework
     {
         public float endValue;
         protected bool isOver = false;
+        private float moveDistance = 1.0f;
         public MoveDownState(FSM<T> fsm, PawnController target) : base(fsm, target)
         {
             
@@ -22,25 +23,28 @@ namespace GJFramework
         protected override void OnEnter()
         {
             isOver = false;
+            moveDistance = mTarget.data.moveDistance;
             mTarget.transform.LookAt(mTarget.transform.position + Vector3.back * 2.0f);
 
-            Ray ray = new Ray(mTarget.transform.position, Vector3.back);
+            Ray ray = new Ray(mTarget.transform.position + Vector3.up * 0.5f, Vector3.back);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1.0f, 1 << LayerMask.NameToLayer("Obstacle"), QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out hit, moveDistance, 1 << LayerMask.NameToLayer("Obstacle"), QueryTriggerInteraction.Collide))
             {
-                // Debug.DrawLine(mTarget.transform.position + Vector3.up * 0.5f, mTarget.transform.position + Vector3.up * 0.5f + Vector3.right, Color.red);
+                //Debug.Log("Hit!");
+                //Debug.DrawLine(mTarget.transform.position + Vector3.up * 0.5f, mTarget.transform.position + Vector3.up * 0.5f + Vector3.right, Color.red);
                 isOver = true;
             }
-            else
+
+            if (!isOver)
             {
-                endValue = mTarget.transform.position.z - 1;
+                endValue = mTarget.transform.position.z - moveDistance;
                 mTarget.transform.DOMoveZ(endValue, 1.0f / Mathf.Max(mTarget.data.speed, 0.1f))
                     .SetEase(mTarget.data.moveCurve)
                     .onComplete = () =>
-                    {
-                        mTarget.transform.PositionZ(endValue);
-                        isOver = true;
-                    };
+                {
+                    mTarget.transform.PositionZ(endValue);
+                    isOver = true;
+                };
             }
         }
     }

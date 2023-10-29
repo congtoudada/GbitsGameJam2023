@@ -10,6 +10,7 @@ namespace GJFramework
     {
         public float endValue;
         protected bool isOver = false;
+        private float moveDistance = 1.0f;
         
         public MoveRightState(FSM<T> fsm, PawnController target) : base(fsm, target)
         {
@@ -23,19 +24,20 @@ namespace GJFramework
         protected override void OnEnter()
         {
             isOver = false;
+            moveDistance = mTarget.data.moveDistance;
             mTarget.transform.LookAt(mTarget.transform.position + Vector3.right * 2.0f);
 
-            Ray ray = new Ray(mTarget.transform.position, Vector3.right);
+            Ray ray = new Ray(mTarget.transform.position + Vector3.up * 0.5f, Vector3.right);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1.0f, 1 << LayerMask.NameToLayer("Obstacle"), QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out hit, moveDistance, 1 << LayerMask.NameToLayer("Obstacle"), QueryTriggerInteraction.Collide))
             {
                 // Debug.Log("hit!");
                 // Debug.DrawLine(mTarget.transform.position, hit.transform.position, Color.red);
                 isOver = true;
             }
-            else
+            if (!isOver)
             {
-                endValue = mTarget.transform.position.x + 1;
+                endValue = mTarget.transform.position.x + moveDistance;
                 mTarget.transform.DOMoveX(endValue, 1.0f / Mathf.Max(mTarget.data.speed, 0.1f))
                     .SetEase(mTarget.data.moveCurve)
                     .onComplete = () =>

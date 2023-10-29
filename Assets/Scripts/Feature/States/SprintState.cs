@@ -33,7 +33,7 @@ namespace GJFramework
                 {
                     isSprint = true;
                     endValue = mTarget.transform.position + mTarget.transform.forward * i;
-                    mTarget.transform.DOMove(endValue, 1.0f / Mathf.Max(mTarget.data.speed * 1.5f, 0.1f))
+                    mTarget.transform.DOMove(endValue, 1.0f / Mathf.Max(mTarget.data.speed, 0.1f))
                         .SetEase(Ease.OutSine)
                         .onComplete = () =>
                         {

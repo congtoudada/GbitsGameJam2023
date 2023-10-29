@@ -18,6 +18,11 @@ namespace GJFramework
     {
         public PawnData data;
 
+        public const string IS_RUNNING = "isRunning";
+        public const string IS_ATTACK = "isAttack";
+        public const string IS_ABSORB = "isAbsorb";
+        public const string IS_ABSORB_INPLACE = "isAbsorbInplace";
+
 
         protected void Start()
         {

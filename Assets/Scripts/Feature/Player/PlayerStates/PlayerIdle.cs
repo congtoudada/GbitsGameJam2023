@@ -10,14 +10,10 @@ namespace GJFramework
             mTarget = target as PlayerController;;
         }
 
-        protected override bool OnCondition()
-        {
-            return true;
-        }
-
         protected override void OnEnter()
         {
-
+            mTarget.animController.SetBool(PawnController.IS_RUNNING, false);
+            mTarget.animController.SetBool(PawnController.IS_ATTACK, false);
         }
     }
 }

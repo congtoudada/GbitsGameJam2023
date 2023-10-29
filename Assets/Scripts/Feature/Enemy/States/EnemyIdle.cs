@@ -9,5 +9,11 @@ namespace GJFramework
         {
             mTarget = target as EnemyController;
         }
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+            
+        }
     }
 }

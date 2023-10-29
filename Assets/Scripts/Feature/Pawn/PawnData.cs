@@ -19,6 +19,8 @@ namespace GJFramework
         public string name;
         public float speed = 2.0f;
         public int sprintDistance = 2;
+        public float moveDistance = 1.0f;
+        public float scale = 1.0f;
         public bool isDebug = false;
         public Ease moveCurve = Ease.Linear;
     }
