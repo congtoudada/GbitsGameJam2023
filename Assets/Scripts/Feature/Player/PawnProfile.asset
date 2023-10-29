@@ -15,4 +15,7 @@ MonoBehaviour:
   name: Player
   speed: 4
   sprintDistance: 3
-  isDebug: 1
+  moveDistance: 1
+  scale: 1
+  isDebug: 0
+  moveCurve: 1

@@ -20,15 +20,26 @@ namespace GJFramework
 
         public Image sp_img_bg;
         public Image sp_img;
+
+        public RawImage showImage;
         // Start is called before the first frame update
         void Start()
         {
+            showImage.gameObject.SetActive(false);
             sp.SetValueWithoutEvent(1.0f);
             sp.Register(x =>
             {
                 sp_img.DOFillAmount(x, 0.3f);
                 sp_img_bg.DOFillAmount(x, 0.6f);
             });
+        }
+
+        public void PlayShowAnim(int id)
+        {
+            if (id < 1 || id > 13) return;
+            showImage.gameObject.SetActive(true);
+            showImage.texture = Resources.Load<Texture>($"{id}");
+            showImage.transform.DOLocalMove(-transform.up * 3.0f, 2.5f).From();
         }
     }
 }

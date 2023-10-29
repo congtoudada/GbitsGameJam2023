@@ -29,8 +29,21 @@ namespace GJFramework
         public Animator animator;
         public EnemyData enemyData;
 
-        protected void Start()
+        // void Start()
+        // {
+        //     FSM.OnStateChanged((pre_action, now_action) =>
+        //     {
+        //         if (data.isDebug)
+        //             Debug.Log($"[ {data.name} ] {pre_action} -> {now_action}");
+        //     });
+        //
+        //     transform.localScale = Vector3.one * data.scale;
+        //     animator.speed *= 2.0f / data.scale;
+        // }
+
+        public void Init(PawnData data)
         {
+            this.data = data;
             FSM.OnStateChanged((pre_action, now_action) =>
             {
                 if (data.isDebug)
@@ -39,7 +52,6 @@ namespace GJFramework
 
             transform.localScale = Vector3.one * data.scale;
             animator.speed *= 2.0f / data.scale;
-
         }
 
         // Update is called once per frame

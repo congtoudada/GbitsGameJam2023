@@ -2,7 +2,7 @@
 
 namespace GJFramework
 {
-    public class EnemyChaseController : EnemyController
+    public class EnemyChaseController : EnemyController, ICanAbsorbed
     {        
         private EnemyAnimEvent enemyAnimEvent;
         // Start is called before the first frame update
@@ -31,6 +31,11 @@ namespace GJFramework
         void Update()
         {
             base.Update();
+        }
+
+        public int BeAbsorbed()
+        {
+            return 1;
         }
     }
 }

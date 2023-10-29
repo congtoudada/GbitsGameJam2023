@@ -16,12 +16,27 @@ namespace GJFramework
     public class EnemyAnimEvent : MonoBehaviour
     {
         public event Action<string> OnActionOver;
-        public SphereCollider collider;
-        
+        private SphereCollider collider;
+
+        private void Start()
+        {
+            collider = GetComponentInChildren<SphereCollider>();
+        }
+
         public void ActionOver(string name)
         {
             collider.isTrigger = false;
             OnActionOver?.Invoke(name);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // Debug.Log("Trigger: " + other.name);
+            if (other.CompareTag("PlayerModel"))
+            {
+                collider.isTrigger = false;
+                other.transform.parent.GetComponent<PlayerController>().Hurt();
+            }
         }
 
         public void BeginCalTrigger()

@@ -1,4 +1,6 @@
 ﻿using QFramework;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace GJFramework
 {
@@ -32,14 +34,20 @@ namespace GJFramework
         {
             if (name == "absorb_inplace")
             {
+                Ray ray = new Ray(mTarget.transform.position + Vector3.up * 0.5f, Vector3.down);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 3.0f, 1 << LayerMask.NameToLayer("Floor"), QueryTriggerInteraction.Collide))
+                {
+                    var item = hit.transform.GetComponent<LevelItem>();
+                    if (item != null)
+                    {
+                        mTarget.ProcessNumberOrOp(hit.transform.GetComponent<LevelItem>().BeAbsorbed()); 
+                    }
+                }
                 mTarget.playerAnimEvent.OnActionOver -= AbsorbInpalceOver;
                 isOver = true;
+                mTarget.animController.SetBool(PawnController.IS_ABSORB_INPLACE, false);
             }
-        }
-
-        protected override void OnExit()
-        {
-            mTarget.animController.SetBool(PawnController.IS_ABSORB_INPLACE, false);
         }
     }
 }

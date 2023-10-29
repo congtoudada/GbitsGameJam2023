@@ -5,11 +5,19 @@ using QFramework;
 
 namespace GJFramework
 {
-	// Generate Id:d6c982b0-ba03-4389-ab45-dd7a58b41380
+	// Generate Id:c361096a-77d0-454f-a808-ed939a9f13c1
 	public partial class GamePanel
 	{
 		public const string Name = "GamePanel";
 		
+		[SerializeField]
+		public RectTransform life1;
+		[SerializeField]
+		public RectTransform life2;
+		[SerializeField]
+		public RectTransform life3;
+		[SerializeField]
+		public RectTransform Horizontal;
 		[SerializeField]
 		public GJFramework.NumberOpItem Number1;
 		[SerializeField]
@@ -17,7 +25,7 @@ namespace GJFramework
 		[SerializeField]
 		public GJFramework.NumberOpItem Number2;
 		[SerializeField]
-		public GJFramework.NumberOpItem Operation;
+		public GJFramework.NumberOpItem Operation2;
 		[SerializeField]
 		public GJFramework.NumberOpItem Number3;
 		[SerializeField]
@@ -33,10 +41,14 @@ namespace GJFramework
 		
 		protected override void ClearUIComponents()
 		{
+			life1 = null;
+			life2 = null;
+			life3 = null;
+			Horizontal = null;
 			Number1 = null;
 			Operation1 = null;
 			Number2 = null;
-			Operation = null;
+			Operation2 = null;
 			Number3 = null;
 			Operation3 = null;
 			Number4 = null;

@@ -17,8 +17,8 @@ namespace GJFramework
     public class PlayerData : ScriptableObject
     {
         public float max_sp = 100.0f;
-        public float sp_revocer_time = 5.0f;
-        public float lock_ratio = 0.5f;
+        public float sp_revocer_time = 10.0f;
+        public float lock_ratio = 0.67f;
         
         public SerializableDictionary<PlayerState, int> ActionPriorityDict = new SerializableDictionary<PlayerState, int>
         {
@@ -30,8 +30,8 @@ namespace GJFramework
                 { PlayerState.MoveDown, 10 },
                 { PlayerState.MoveLeft, 10 },
                 { PlayerState.MoveRight, 10 },
-                { PlayerState.Absorb, 5 },
-                { PlayerState.AbsorbInplace, 5 },
+                { PlayerState.Absorb, 15 },
+                { PlayerState.AbsorbInplace, 15 },
                 { PlayerState.Attack, 5 },
                 { PlayerState.Sprint, 20 },
                 { PlayerState.Die, 99}

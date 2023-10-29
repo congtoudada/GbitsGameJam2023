@@ -29,7 +29,7 @@ namespace GJFramework
         Sprint,
         Die
     }
-
+    
     public class PlayerController : PawnController
     {
         public FSM<PlayerState> FSM = new FSM<PlayerState>();
@@ -43,9 +43,23 @@ namespace GJFramework
         public bool isLockInput = false; //全局锁输入
         // public bool isLockChangeState = false; //锁状态，无法通过按键主动切换
         public int current_lock_input_priority = 0; //当前锁输入的优先级
+        public Transform[] raycastGroup;
 
         private bool first_horizontal = true;
         private const int commandCacheCount = 1;
+
+        [HideInInspector]
+        public GamePanel gamePanel
+        {
+            get
+            {
+                if (mGamePanel == null)
+                    mGamePanel = UIKit.GetPanel<GamePanel>();
+                return mGamePanel;
+            }
+        }
+
+        private GamePanel mGamePanel;
         // Start is called before the first frame update
         void Start()
         {
@@ -66,7 +80,8 @@ namespace GJFramework
             
             FSM.OnStateChanged((pre_action, now_action) =>
             {
-                Debug.Log($"[ {data.name} ] {pre_action} -> {now_action}");
+                if (data.isDebug)
+                    Debug.Log($"[ {data.name} ] {pre_action} -> {now_action}");
                 // if (now_action != PlayerState.Idle && data.isDebug)
                 //     Debug.Log($"[ {data.name} ] {pre_action} -> {now_action}");
 
@@ -138,12 +153,24 @@ namespace GJFramework
             {
                 AddCommand(PlayerState.Absorb);
             }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                AddCommand(PlayerState.AbsorbInplace);
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                gamePanel.BackIdx();
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                gamePanel.NextIdx();
+            }
         }
 
         bool AddCommand(PlayerState inputState)
         {
             var currentPrior = playerData.ActionPriorityDict[inputState];
-            Debug.Log("cur: " + currentPrior + " vs. " + current_lock_input_priority);
+            // Debug.Log("cur: " + currentPrior + " vs. " + current_lock_input_priority);
             if (CommandCache.Count < commandCacheCount)
             {
                 // 只有输入优先级大于当前优先级才放入缓存
@@ -179,7 +206,7 @@ namespace GJFramework
                 if (CommandCache.Count > 0)
                 {
                     var CommandState = CommandCache[0];
-                    Debug.Log("Process: " + CommandState);
+                    // Debug.Log("Process: " + CommandState);
                     CommandCache.RemoveAt(0);
                     if (CheckEnergy(CommandState))
                     {
@@ -232,8 +259,24 @@ namespace GJFramework
             //更新状态机
             FSM.Update();
             
+            //动作bug自动刷新
+            if (FSM.FrameCountOfCurrentState > 60 * 10.0f)
+            {
+                FSM.ChangeState(PlayerState.Idle);
+            }
+            
             //恢复SP
             UpdateSP();
+        }
+
+        public void Hurt()
+        {
+            gamePanel.Hurt();
+        }
+
+        public void Recover()
+        {
+            gamePanel.Recover();
         }
 
         private void UpdateSP()
@@ -241,8 +284,20 @@ namespace GJFramework
             if (sp <= playerData.max_sp)
             {
                 sp += playerData.max_sp * (1.0f / playerData.sp_revocer_time) * Time.deltaTime;
+                if (sp > playerData.max_sp) sp = playerData.max_sp;
                 spController.sp.Value = sp / playerData.max_sp;
             }
+        }
+
+        public void ProcessNumberOrOp(int id)
+        {
+            if (id <= 0 || id > 10)
+            {
+                Debug.Log("非法id: " +id);
+                return;
+            }
+            spController.PlayShowAnim(id);
+            gamePanel.ChangeValue(id);
         }
         
     }
