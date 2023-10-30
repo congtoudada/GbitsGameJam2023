@@ -5,7 +5,7 @@ using QFramework;
 
 namespace GJFramework
 {
-	// Generate Id:c361096a-77d0-454f-a808-ed939a9f13c1
+	// Generate Id:cb90640e-b38c-463f-9012-fa64e8885f59
 	public partial class GamePanel
 	{
 		public const string Name = "GamePanel";

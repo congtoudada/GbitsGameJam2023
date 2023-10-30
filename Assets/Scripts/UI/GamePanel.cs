@@ -35,6 +35,9 @@ namespace GJFramework
 		public int nowValue;
 		private List<RectTransform> hpGroup = new List<RectTransform>();
 
+		public GameObject Panel;
+		public Button btn;
+
 		protected override void OnInit(IUIData uiData = null)
 		{
 			mData = uiData as GamePanelData ?? new GamePanelData();
@@ -55,6 +58,12 @@ namespace GJFramework
 			hpGroup.Add(life1);
 			hpGroup.Add(life2);
 			hpGroup.Add(life3);
+			
+			Panel.SetActive(false);
+			btn.onClick.AddListener(() =>
+			{
+				SceneManager.LoadScene("Level1");
+			});
 			
 			
 			currentId.RegisterWithInitValue(v =>
@@ -118,7 +127,10 @@ namespace GJFramework
 
 			uiDict[8].number = CalSum();
 			uiDict[8].UpdateView();
-			
+			if (uiDict[8].number == 24)
+			{
+				Panel.SetActive(true);
+			}
 		}
 
 		private int CalSum()
